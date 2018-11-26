@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+from decks.models import *
 
 class Card(models.Model):
     # @See https://github.com/MagicTheGathering/mtg-sdk-python
@@ -28,3 +30,12 @@ class Card(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class CollectionEntry(models.Model):
+    card = models.ForeignKey(Card, on_delete=models.CASCADE)
+    owned = models.PositiveIntegerField(null=False, blank=False)
+    wishlist = models.PositiveIntegerField(null=False, blank=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __unicode__(self):
+        return self.card
