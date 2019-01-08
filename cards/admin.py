@@ -8,7 +8,7 @@ from cards.models import (
 class CardAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('multiverseid',),
+            'fields': ('multiverse_id',),
         }),
         ('Card', {
             'fields': ('name', 'cardtype', 'rulings', 'flavor',),
