@@ -19,7 +19,7 @@ class CardManager(models.Manager):
                 cmc = cards[0].cmc,
                 colors = cards[0].colors,
                 color_identity = cards[0].color_identity,
-                cardtype = cards[0].cardtype,
+                cardtype = cards[0].type,
                 supertypes = cards[0].supertypes,
                 subtypes = cards[0].subtypes,
                 rarity = cards[0].rarity,
@@ -37,7 +37,8 @@ class CardManager(models.Manager):
                 printings = cards[0].printings
             )
         else:
-            echo("something went wrong with your lookup.")
+            # TODO add error handling
+            raise ValueError("oops! something went wrong with your lookup.")
 
 class Card(models.Model):
     # @See https://github.com/MagicTheGathering/mtg-sdk-python
@@ -57,7 +58,7 @@ class Card(models.Model):
     number = models.PositiveIntegerField(null=False, blank=False)
     power = models.PositiveIntegerField(null=False, blank=False)
     toughness = models.PositiveIntegerField(null=False, blank=False)
-    loyalty = models.PositiveIntegerField(null=False, blank=False)
+    loyalty = models.PositiveIntegerField(null=True, blank=True)
     rulings = models.TextField(null=True)
     legalities = models.TextField(null=True)
     image_url = models.URLField(max_length=300, blank=True)
