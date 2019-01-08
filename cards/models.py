@@ -69,12 +69,3 @@ class Card(models.Model):
 
     def __unicode__(self):
         return self.name
-
-class CollectionEntry(models.Model):
-    card = models.ForeignKey(Card, on_delete=models.CASCADE)
-    owned = models.PositiveIntegerField(null=False, blank=False)
-    wishlist = models.PositiveIntegerField(null=False, blank=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __unicode__(self):
-        return self.card

@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'decks',
     'cards',
+    'collection',
+    'harvester',
+    'merchant'
 ]
 
 MIDDLEWARE = [
