@@ -1,3 +1,7 @@
+import os
+from django.core.files import File
+from urllib.request import urlopen
+from tempfile import NamedTemporaryFile
 from django.db import models
 from django.contrib.auth.models import User
 from mtgsdk import Card as SDKCard
@@ -8,8 +12,6 @@ class CardManager(models.Manager):
         cards = SDKCard.where(set=set_code).where(number=number).all()
         if len(cards) == 1:
             # Populate card info.
-            import pdb
-            pdb.set_trace()
             self.create(
                 multiverse_id = cards[0].multiverse_id,
                 name = cards[0].name,
@@ -42,7 +44,7 @@ class CardManager(models.Manager):
 class Card(models.Model):
     # @See https://github.com/MagicTheGathering/mtg-sdk-python
     multiverse_id = models.PositiveIntegerField(null=False, blank=False)
-    name = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=200, unique=False)
     layout = models.CharField(max_length=50)
     mana_cost = models.CharField(max_length=10)
     cmc = models.PositiveIntegerField(null=False, blank=False)
@@ -53,7 +55,7 @@ class Card(models.Model):
     subtypes = models.CharField(max_length=255)
     rarity = models.CharField(max_length=255)
     text = models.TextField(null=False)
-    flavor = models.TextField(null=False)
+    flavor = models.TextField(null=True, blank=True)
     number = models.PositiveIntegerField(null=False, blank=False)
     power = models.PositiveIntegerField(null=False, blank=False)
     toughness = models.PositiveIntegerField(null=False, blank=False)
@@ -61,7 +63,7 @@ class Card(models.Model):
     rulings = models.TextField(null=True)
     legalities = models.TextField(null=True)
     image_url = models.URLField(max_length=300, blank=True)
-    image = models.ImageField(upload_to='card_images/', default='pic_folder/no-img.png')
+    image_file = models.ImageField(upload_to='card_images/')
     set = models.CharField(max_length=255, blank=False)
     set_name = models.TextField(null=True)
     printings = models.TextField(null=True)
@@ -71,6 +73,12 @@ class Card(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        # TODO download image url into imagefield.
+        # TODO confirm this isn't a duplicate of an existing card, if so abort.
+        # Download image url into imagefield.
+        if self.image_url and not self.image_file:
+            img_temp = NamedTemporaryFile(delete=True)
+            img_temp.write(urlopen(self.image_url).read())
+            img_temp.flush()
+            self.image_file.save(f"image_{self.multiverse_id}.png", File(img_temp))
 
         super(Card, self).save()
