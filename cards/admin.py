@@ -7,11 +7,8 @@ from cards.models import (
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {
-            'fields': ('multiverse_id',),
-        }),
         ('Card', {
-            'fields': ('name', 'cardtype', 'rulings', 'flavor',),
+            'fields': ('multiverse_id', 'image_url', 'name', 'cardtype', 'flavor', 'colors'),
         }),
         ('Mana', {
             'fields': ('mana_cost', 'cmc',),
@@ -21,7 +18,7 @@ class CardAdmin(admin.ModelAdmin):
         }),
         ('Legality', {
             'classes': ('collapse',),
-            'fields': (('legalities'),),
+            'fields': (('legalities', 'rulings'),),
         }),
     )
     list_display = ('name', 'cardtype', 'cmc', 'power', 'toughness',)

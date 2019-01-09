@@ -61,6 +61,7 @@ class Card(models.Model):
     rulings = models.TextField(null=True)
     legalities = models.TextField(null=True)
     image_url = models.URLField(max_length=300, blank=True)
+    image = models.ImageField(upload_to='card_images/', default='pic_folder/no-img.png')
     set = models.CharField(max_length=255, blank=False)
     set_name = models.TextField(null=True)
     printings = models.TextField(null=True)
@@ -68,3 +69,8 @@ class Card(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        # TODO download image url into imagefield.
+
+        super(Card, self).save()
