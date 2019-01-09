@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from decks.models import *
 from mtgsdk import Card as SDKCard
 
 class CardManager(models.Manager):
