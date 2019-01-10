@@ -7,6 +7,8 @@ class CollectionEntry(models.Model):
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # TODO add foil status.
+    # TODO add field for paper/arena/online
+
 
     def __unicode__(self):
         return self.card
