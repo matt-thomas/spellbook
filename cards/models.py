@@ -43,7 +43,7 @@ class CardManager(models.Manager):
 
 class Card(models.Model):
     # @See https://github.com/MagicTheGathering/mtg-sdk-python
-    multiverse_id = models.PositiveIntegerField(null=False, blank=False)
+    multiverse_id = models.PositiveIntegerField(null=False, blank=False, primary_key=True)
     name = models.CharField(max_length=200, unique=False)
     layout = models.CharField(max_length=50)
     mana_cost = models.CharField(max_length=10)
@@ -63,7 +63,7 @@ class Card(models.Model):
     rulings = models.TextField(null=True)
     legalities = models.TextField(null=True)
     image_url = models.URLField(max_length=300, blank=True)
-    image_file = models.ImageField(upload_to='card_images/')
+    image_file = models.ImageField(upload_to='static/card_images/')
     set = models.CharField(max_length=255, blank=False)
     set_name = models.TextField(null=True)
     printings = models.TextField(null=True)
