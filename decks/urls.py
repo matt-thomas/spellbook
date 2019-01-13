@@ -6,6 +6,6 @@ from decks.views import DeckDetailView, DecksIndexView, add_deck
 
 urlpatterns = [
   path('', DecksIndexView, name='deck_index'),
-  url(r'^(?P<slug>.+)/$', DeckDetailView.as_view(), name='deck_details'),
+  url(r'^(?P<pk>.+)/$', DeckDetailView.as_view(), name='deck_details'),
   path('add', add_deck, name='deck_add')
 ]

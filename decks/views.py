@@ -50,7 +50,7 @@ def add_deck(request):
 
             # Redirect to confirmation page
 
-            return HttpResponseRedirect('/decks/add/thanks?did=')
+            return HttpResponseRedirect('/decks/' + str(deck.id))
 
     # if a GET (or any other method) we'll create a blank form
     else:
