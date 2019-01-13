@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Decks</h1>
+  <p>We sure do got lots of decks, boy howdy!</p>
+  <p><a href="{% url 'deck_add' %}">Add a deck</a>
+  <h2>Dynamic content</h2>
+  <p>The library has the following record counts:</p>
+  <ul>
+    <li><strong>Decks:</strong> {{ num_decks }}</li>
+  </ul>
+{% endblock %}

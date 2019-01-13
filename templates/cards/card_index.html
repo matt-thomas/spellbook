@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Cards</h1>
+  <p>Look at all these danged cards!</p>
+  <h2>Dynamic content</h2>
+  <p>The library has the following record counts:</p>
+  <ul>
+    <li><strong>Cards:</strong> {{ num_cards }}</li>
+    <li><strong>Collection Entries:</strong> {{ num_instances }}</li>
+  </ul>
+{% endblock %}

@@ -10,6 +10,11 @@ class DeckAdmin(admin.ModelAdmin):
     list_display = ['name', 'user']
     search_fields = ['name']
 
+    # Ensure current user saves.
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super().save_model(request, obj, form, change)
+
 @admin.register(SideBoard)
 class SideBoardAdmin(admin.ModelAdmin):
     list_display = ['deck']

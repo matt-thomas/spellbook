@@ -18,8 +18,11 @@ from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
+    url(r'', include('cms.urls')),
     path('admin/', admin.site.urls),
     path('cards/', include('cards.urls')),
     path('collections/', include('collection.urls')),
     path('decks/', include('decks.urls')),
+    path('wizards/', include('wizards.urls')),
+    path('wizards/', include('django.contrib.auth.urls'))
 ]

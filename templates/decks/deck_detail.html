@@ -1,0 +1,8 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ object.name }}</h1>
+  <p>{{ object.user }}</p>
+  <p>Cards: {{ object.cards }}</p>
+  <p>Sideboard: {{ object.sideboard.cards }}</p>
+{% endblock %}
