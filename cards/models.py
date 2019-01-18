@@ -7,7 +7,35 @@ from django.contrib.auth.models import User
 from mtgsdk import Card as SDKCard
 
 class CardManager(models.Manager):
-    def create_card(self, number, set_code):
+    def create_from_values(self, values):
+        # Populate card info.
+        self.create(
+            multiverse_id = values['multiverse_id'],
+            name = values['name'],
+            layout = values['layout'],
+            mana_cost = values['mana_cost'],
+            cmc = values['cmc'],
+            colors = values['colors'],
+            color_identity = values['color_identity'],
+            cardtype = values['cardtype'],
+            supertypes = values['supertypes'],
+            subtypes = values['subtypes'],
+            rarity = values['rarity'],
+            text = values['text'],
+            flavor = values['flavor'],
+            number = values['number'],
+            power = values['power'],
+            toughness = values['toughness'],
+            loyalty = values['loyalty'],
+            rulings = values['rulings'],
+            legalities = values['legalities'],
+            image_url = values['image_url'],
+            set = values['set'],
+            set_name = values['set_name'],
+            printings = values['printings']
+        )
+
+    def create_card_lookup(self, number, set_code):
         # Use mtgsdk to lookup card info.
         cards = SDKCard.where(set=set_code).where(number=number).all()
         if len(cards) == 1:
@@ -54,11 +82,11 @@ class Card(models.Model):
     supertypes = models.CharField(max_length=255)
     subtypes = models.CharField(max_length=255)
     rarity = models.CharField(max_length=255)
-    text = models.TextField(null=False)
+    text = models.TextField(null=True)
     flavor = models.TextField(null=True, blank=True)
     number = models.PositiveIntegerField(null=False, blank=False)
-    power = models.PositiveIntegerField(null=False, blank=False)
-    toughness = models.PositiveIntegerField(null=False, blank=False)
+    power = models.PositiveIntegerField(null=True, blank=True)
+    toughness = models.PositiveIntegerField(null=True, blank=True)
     loyalty = models.PositiveIntegerField(null=True, blank=True)
     rulings = models.TextField(null=True)
     legalities = models.TextField(null=True)
