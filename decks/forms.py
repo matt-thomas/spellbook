@@ -82,6 +82,9 @@ class DeckForm(forms.Form):
         if len(errors) > 0:
             raise forms.ValidationError(errors)
 
+        # Finally, return the cleaned_data
+        return self.cleaned_data
+
     def parse_cards(self, card_data):
         data_lines = card_data.splitlines()
 
@@ -107,16 +110,16 @@ class DeckForm(forms.Form):
 
                 if quantity and card_name:
                     # Search local catalog for card.
-                    local_entry = Card.objects.filter(name=card_name)
+                    local_entry = Card.objects.filter(name__iexact=card_name)
 
                     # If we find a local match, no worries.
                     if len(local_entry) > 0:
-                        return
+                        return []
                     else:
                         # If we can't find a local match, query the card api.
                         cards = SDKCard.where(name=card_name).all()
                         if len(cards) > 0:
-                            # TODO If we find cards, create them all locally.
+                            # If we find cards, create them all locally.
                             for card in cards:
                                 if card.multiverse_id:
                                     values = {
@@ -144,15 +147,21 @@ class DeckForm(forms.Form):
                                         "set_name": card.set_name,
                                         "printings": card.printings
                                     }
-                                    Card.objects.create_from_values(values)
-                                else:
-                                    errors.append(forms.ValidationError(
-                                            # TODO add contact info
-                                            _('Invalid import line number %(num)s: "%(line)s" \n\n Could not find card multiverse ID.'),
-                                            params={'num': num, 'line': line},
-                                            code='error'
-                                        )
+                                    try:
+                                        Card.objects.create_from_values(values)
+                                    except:
+                                        print("no match")
+
+                            # Now that we've imported, see if we have an entry.
+                            local_entry = Card.objects.filter(name__iexact=card_name)
+                            if len(local_entry) > 0:
+                                errors.append(forms.ValidationError(
+                                        # TODO add contact info
+                                        _('Invalid import line number %(num)s: "%(line)s" \n\n Could not find matching card name.'),
+                                        params={'num': num, 'line': line},
+                                        code='error'
                                     )
+                                )
                         else:
                             errors.append(forms.ValidationError(
                                     # TODO add contact info
@@ -161,6 +170,7 @@ class DeckForm(forms.Form):
                                     code='error'
                                 )
                             )
+
                 else:
                     errors.append(forms.ValidationError(
                             # TODO add contact info

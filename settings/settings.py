@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'collection',
     'decks',
     'harvester',
-    'merchant'
+    'merchant',
+    'wizards'
 ]
 
 MIDDLEWARE = [

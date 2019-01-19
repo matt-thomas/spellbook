@@ -12,7 +12,7 @@
     </ol>
   {% endif %}
 
-  <form action="/decks/add" method="post">
+  <form action="/decks/add/" method="post">
       {% csrf_token %}
       {{ form }}
       <input type="submit" value="Submit">
